@@ -1,0 +1,37 @@
+# A deliberately bad API: every one of the 10 checks should fire.
+openapi: 3.0.0
+info:
+  title: Messy API
+  # no version -> info-version-missing
+# no servers -> servers-missing
+paths:
+  /users:
+    get:
+      # no operationId -> operation-id-missing
+      # no pagination params on a collection GET -> pagination-missing
+      responses:
+        '200':
+          description: OK
+          # no 4xx/5xx -> error-responses-missing; no 429 -> rate-limit-response-missing
+  /order_items:
+    post:
+      # no operationId -> operation-id-missing
+      responses:
+        '200':
+          description: OK
+  /userAccounts/{userId}:
+    get:
+      # no operationId -> operation-id-missing
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+# Mixed snake_case (/order_items) and camelCase (/userAccounts) -> naming-inconsistent
+# No components.securitySchemes -> security-schemes-missing
+# No global or operation security -> operation-security-missing
+# No /vN prefix on any path -> version-prefix-missing

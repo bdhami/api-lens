@@ -1,0 +1,69 @@
+# A well-designed API: every check should pass (zero findings expected).
+openapi: 3.0.3
+info:
+  title: Taskboard API
+  version: 1.4.2
+servers:
+  - url: https://api.taskboard.example.com/v1
+security:
+  - bearerAuth: []
+paths:
+  /v1/projects:
+    get:
+      operationId: listProjects
+      summary: List all projects
+      parameters:
+        - name: limit
+          in: query
+          schema:
+            type: integer
+        - name: page_token
+          in: query
+          schema:
+            type: string
+      responses:
+        '200':
+          description: A page of projects
+        '400':
+          description: Bad request
+        '429':
+          description: Rate limit exceeded
+        '500':
+          description: Internal server error
+    post:
+      operationId: createProject
+      summary: Create a project
+      responses:
+        '201':
+          description: Project created
+        '400':
+          description: Bad request
+        '429':
+          description: Rate limit exceeded
+        '500':
+          description: Internal server error
+  /v1/projects/{project_id}:
+    get:
+      operationId: getProject
+      summary: Get a single project
+      parameters:
+        - name: project_id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: The project
+        '404':
+          description: Project not found
+        '429':
+          description: Rate limit exceeded
+        '500':
+          description: Internal server error
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
