@@ -1,0 +1,13 @@
+# Render Blueprint for API Lens — makes deploy a one-click "New Blueprint" in the
+# Render dashboard. Free plan: spins down after 15 min idle (fine for a demo).
+services:
+  - type: web
+    name: api-lens
+    runtime: python
+    plan: free
+    buildCommand: pip install -r requirements.txt
+    startCommand: python server.py
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.12.0
+      # Render injects PORT automatically; server.py already honors it.

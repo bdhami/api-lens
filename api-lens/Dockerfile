@@ -1,0 +1,13 @@
+FROM python:3.12-slim
+
+WORKDIR /app
+
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+
+COPY server.py checks.py ./
+
+# The host injects PORT (Fly.io, Railway, Render all do); server.py honors it.
+EXPOSE 8000
+
+CMD ["python", "server.py"]
